@@ -1,2 +1,1 @@
-# Scratch-WebSocket
-Web socket server from scratch with Node.js
+# Express web socket server
