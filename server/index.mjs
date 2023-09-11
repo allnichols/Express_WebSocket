@@ -13,7 +13,25 @@ server.listen(PORT, () => {
 
 
 function randomMessage(){
-    const messages = ['hello', 'hi', 'bye', 'goodbye', 'hola', 'adios', 'bonjour', 'au revoir', 'ciao', 'arrivederci', 'hallo', 'tschuss'];
+    // array of objects user, message, id
+    const messages = [
+        {
+            user: 'John Doe',
+            message: 'wow',
+            id: uuidv4()
+        },
+        {
+            user: 'Sally Mae',
+            message: 'yoo!!!!',
+            id: uuidv4()
+        },
+        {
+            user: 'Jane Doe',
+            message: 'dude this is so cool',
+            id: uuidv4()
+        },
+    ]
+    
     const randomIndex = Math.floor(Math.random() * messages.length);
     return messages[randomIndex];
 }
@@ -21,9 +39,8 @@ function randomMessage(){
 ws.on('connection', function connection(ws){
 
     const message = setInterval(() => {
-        ws.send(randomMessage())
-        console.log('sent message')
-    }, 10000);
+        ws.send(JSON.stringify(randomMessage()));
+    }, 3000);
 
     ws.on('message', function incoming(message){
         console.log('received: %s', message);

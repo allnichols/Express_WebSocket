@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import {Container, Button, Input } from '@mantine/core';
+import {Container, Button, Input, Flex, Text, Space, ScrollArea, Box}  from '@mantine/core';
 import './App.css'
 
 function App() {
-  const [messages, setMessages] = useState<string[]>([])
+  const [messages, setMessages] = useState<{user:string; message:string; id:number}[]>([])
   const [userMessage, setUserMessage] = useState<string>('');
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
@@ -29,8 +29,8 @@ function App() {
     }
 
     ws.onmessage = (e) => {
-      console.log(e.data);
-      // setMessages((prev) => [...prev, e.data])
+      const data = JSON.parse(e.data);
+      setMessages((prev) => [...prev, data])
     }
 
     ws.onclose = () => {
@@ -46,6 +46,19 @@ function App() {
 
   return (
     <Container>
+      <ScrollArea h={500}>
+        <Box>
+        {messages.map((message, index) => {
+          return (
+            <Flex justify="flex-start" align="center" direction="row" key={index}>
+              <Text fz="md" >{message.user}:</Text>
+              <Space w="lg" />
+              <Text fz="md">{message.message}</Text>
+            </Flex>
+          )
+        })}
+        </Box>
+      </ScrollArea>
        <Input placeholder="Your message" onChange={handleInput} />
        <Button onClick={handleSend}>Send</Button>
     </Container>
