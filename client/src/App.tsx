@@ -9,10 +9,10 @@ function App() {
 
 
   const handleSend = () => {
-    console.log(socket);
     if (!socket) return;
     console.log(userMessage)
     socket.send(userMessage);
+    setMessages((prev) => [...prev, {user: 'You', message: userMessage, id: Math.random()}])
     setUserMessage('');
   }
 
