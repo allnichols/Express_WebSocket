@@ -2,7 +2,7 @@ CREATE DATABASE chat_app;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
@@ -31,3 +31,7 @@ CREATE TABLE messages (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- alter table to change table users  name column to not unique
+ALTER TABLE users ALTER COLUMN name DROP UNIQUE;
+```
