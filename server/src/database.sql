@@ -31,7 +31,3 @@ CREATE TABLE messages (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
-
--- alter table to change table users  name column to not unique
-ALTER TABLE users ALTER COLUMN name DROP UNIQUE;
-```
