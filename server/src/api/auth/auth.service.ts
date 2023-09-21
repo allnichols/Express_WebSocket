@@ -15,7 +15,6 @@ export async function registerUser(email:string, password: string, name: string 
         const hashedPassword = await hash(password, salt);
         console.log(typeof hashedPassword)
         const newUser = await pool.query(
-            // query that inserts the new user into the database and returns the user
             "INSERT INTO users (email, password, name) VALUES ($1, $2, $3) RETURNING *",
             [email, hashedPassword, name]
         )

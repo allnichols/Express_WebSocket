@@ -5,5 +5,11 @@ const authRoutes = Router();
 
 authRoutes.post("/register", ValidInfo, register);
 authRoutes.post("/login", login);
+authRoutes.post("/logout", (req, res) => {
+
+    res.clearCookie("jwt");
+    return res.json({ message: "Logged out" });
+
+});
 
 export default authRoutes;
