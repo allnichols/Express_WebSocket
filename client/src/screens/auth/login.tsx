@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     TextInput,
     PasswordInput,
@@ -12,6 +13,11 @@ import {
   } from '@mantine/core';
 
 export default function Login() {
+
+    useEffect(() => {
+        console.log('login');
+    }, []);
+
     return (
         <Container size={420} my={40}>
             <Title ta="center">

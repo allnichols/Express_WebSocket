@@ -1,13 +1,24 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./layout";
-const router = createBrowserRouter([
+
+const routes = createBrowserRouter([
     {
         path: "/",
-        loader() {
-            return { user: null };
-        },
         Component: Layout,
+        children: [
+            {
+                index: true,
+                Component: () => <div>Home</div>
+            },
+            {
+                path: 'login',
+                Component: () => <div>Login</div>
+
+            }
+        ]
     }
 ]);
+
+const router = <RouterProvider router={routes} />;
 
 export default router;
