@@ -8,7 +8,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <MantineProvider theme={{ colorScheme: "dark" }}>
+    <MantineProvider>
       <AuthProvider>{router}</AuthProvider>
     </MantineProvider>
   </React.StrictMode>
