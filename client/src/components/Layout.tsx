@@ -1,16 +1,17 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../providers/authProvider";
 import { Tabs, Box } from "@mantine/core";
 import { Outlet, Link } from "react-router-dom";
-
+import { useAuth } from "../providers/authProvider";
 export function Layout() {
+  const { isAuthenticated, checkIfAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!checkIfAuthenticated()) {
       navigate("/login");
+    } else {
+      navigate("/");
     }
   }, [isAuthenticated]);
 
