@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   TextInput,
   PasswordInput,
@@ -9,39 +9,71 @@ import {
   Container,
   Button,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../providers/authProvider";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState({ input: "", error_message: "" });
+  const [password, setPassword] = useState({ input: "", error_message: "" });
+  const [name, setName] = useState({ input: "", error_message: "" });
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("register");
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    console.log("register");
+    if (name.input.length < 3) {
+      setName({
+        ...name,
+        error_message: "Name must be at least 3 characters long",
+      });
+    }
+    if (password.input.length < 3) {
+      setPassword({
+        ...password,
+        error_message: "Password must be at least 3 characters long",
+      });
+    }
+    if (!email.input.includes("@")) {
+      setEmail({ ...email, error_message: "Invalid email" });
+    }
+
+    if (
+      !email.input.includes("@") ||
+      password.input.length < 3 ||
+      name.input.length < 3
+    )
+      return;
+
     const response = await fetch("http://localhost:8000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({
+        email: email.input,
+        password: password.input,
+        name: name.input,
+      }),
     });
+
     const data = await response.json();
-    console.log(data);
+    if (data === "User already exists") {
+      setEmail({ ...email, error_message: "Email already exists" });
+    }
+    if (data.token) {
+      login(data.token);
+      navigate("/");
+    }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.currentTarget.value);
+    setEmail({ input: e.currentTarget.value, error_message: "" });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value);
+    setPassword({ input: e.currentTarget.value, error_message: "" });
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value);
+    setName({ input: e.currentTarget.value, error_message: "" });
   };
 
   return (
@@ -58,12 +90,14 @@ export default function Register() {
         <TextInput
           label="Email"
           placeholder="you@mantine.dev"
+          error={email.error_message}
           required
           onChange={handleEmailChange}
         />
         <TextInput
           label="Name"
           placeholder="John Doe"
+          error={name.error_message}
           required
           mt="md"
           onChange={handleNameChange}
@@ -71,11 +105,17 @@ export default function Register() {
         <PasswordInput
           label="Password"
           placeholder="Your password"
+          error={password.error_message}
           required
           mt="md"
           onChange={handlePasswordChange}
         />
-        <Button onClick={handleSubmit} fullWidth mt="xl">
+        <Button
+          onClick={handleSubmit}
+          fullWidth
+          mt="xl"
+          disabled={!email.input || !password.input || !name.input}
+        >
           Sign up
         </Button>
       </Paper>

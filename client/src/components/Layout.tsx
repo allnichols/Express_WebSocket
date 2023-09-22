@@ -10,7 +10,7 @@ export function Layout() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/register");
+      navigate("/login");
     }
   }, [isAuthenticated]);
 
