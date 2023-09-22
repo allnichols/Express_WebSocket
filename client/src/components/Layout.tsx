@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tabs, Box } from "@mantine/core";
-import { Outlet, Link } from "react-router-dom";
+import { Box } from "@mantine/core";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "../providers/authProvider";
+import Header from "./header";
 export function Layout() {
   const { isAuthenticated, checkIfAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -19,12 +20,10 @@ export function Layout() {
     return <Outlet />;
   } else {
     return (
-      <Box>
-        <Tabs position="center" variant="outline" active={0}>
-          <Link to="/">Home</Link>
-        </Tabs>
+      <>
+        <Header />
         <Outlet />
-      </Box>
+      </>
     );
   }
 }

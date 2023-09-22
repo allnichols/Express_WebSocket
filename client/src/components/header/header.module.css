@@ -1,0 +1,9 @@
+.header {
+  padding-top: var(--mantine-spacing-sm);
+  background-color: #f8f9fa;
+}
+
+.tab[data-active] {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
