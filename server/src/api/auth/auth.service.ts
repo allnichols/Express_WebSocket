@@ -3,7 +3,6 @@ import { hash, genSalt, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 
 export async function registerUser(email:string, password: string, name: string ){
-    console.log('REGISTER USER', email, password, name)
     try {
         const user = await pool.query("SELECT * FROM users WHERE email = $1 AND name = $2", [email, name]);
 

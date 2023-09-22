@@ -1,30 +1,31 @@
+import { useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../providers/authProvider';
 import { Tabs, Box, rem } from '@mantine/core';
 import { Outlet, Link } from 'react-router-dom';
-export function Layout() {
 
-  return (
-    <Box style={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      borderRight: "1px solid #ebebeb",
-    }}>
-      <Tabs variant="pills"  defaultValue="gallery">
-        <Tabs.List>
-          <Tabs.Tab value="gallery">
-            Gallery
-          </Tabs.Tab>
-          <Tabs.Tab value="messages" >
-            Messages
-          </Tabs.Tab>
-          <Tabs.Tab value="settings">
-            Settings
-          </Tabs.Tab>
-        </Tabs.List>
-    </Tabs>
-      <Outlet />
-    </Box> 
-  );
+
+export function Layout() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/register');
+    }
+  }, [isAuthenticated])
+
+  if (!isAuthenticated) {
+    return <Outlet />
+  } else {
+    return (
+      <Box>
+        <Tabs position="center" variant="outline" active={0}>
+          <Link to="/">Home</Link>
+        </Tabs>
+        <Outlet />
+      </Box>
+    )
+  }
+
 }
