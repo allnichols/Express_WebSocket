@@ -1,23 +1,21 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from '../providers/authProvider';
-import { Tabs, Box } from '@mantine/core';
-import { Outlet, Link } from 'react-router-dom';
-
+import { AuthContext } from "../providers/authProvider";
+import { Tabs, Box } from "@mantine/core";
+import { Outlet, Link } from "react-router-dom";
 
 export function Layout() {
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
 
-
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/register');
+      navigate("/register");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
-    return <Outlet />
+    return <Outlet />;
   } else {
     return (
       <Box>
@@ -26,7 +24,6 @@ export function Layout() {
         </Tabs>
         <Outlet />
       </Box>
-    )
+    );
   }
-
 }
